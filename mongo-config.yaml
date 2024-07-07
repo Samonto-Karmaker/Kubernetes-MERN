@@ -1,0 +1,45 @@
+# This is a Kubernetes ConfigMap object. 
+# ConfigMaps allow you to decouple configuration artifacts from image content to keep containerized applications portable.
+# The ConfigMap `mongo-config` is designed to store non-confidential data in key-value pairs, 
+# which can be consumed by pods or used to store configuration settings for system components.
+
+apiVersion: v1 # Specifies the API version for the ConfigMap.
+kind: ConfigMap # Specifies the kind of Kubernetes object you're creating, which is a ConfigMap in this case.
+metadata:
+  name: mongo-config # The name of the ConfigMap. This is how it can be referenced from pods and other resources.
+data:
+  database_url: # MongoDB service URL. This key-value pair holds the connection string to your MongoDB instance.
+  # If URL contains confidential information, consider using a Secret instead of a ConfigMap.
+
+# In a real-world project, follow these practices when working with ConfigMaps:
+# 1. Store Configuration Separately: Keep your application configuration separate from your application code
+# for easier management and to follow the twelve-factor app principles.
+
+# 2. Use ConfigMaps for Non-Sensitive Data: Only use ConfigMaps for non-sensitive data. 
+# Use Secrets for passwords, tokens, and other sensitive information.
+
+# 3. Version Control: While ConfigMaps can be included in version control, be mindful of the environment-specific configurations. 
+# Consider using different ConfigMaps for different environments (dev, staging, production).
+
+# 4. Dynamic Configuration: Remember that changes to ConfigMaps are not automatically reflected in the pods that consume them.
+# You may need to restart the pods to pick up changes in ConfigMaps.
+
+# 5. Template Tools: For complex configurations, consider using template tools like Helm to manage your ConfigMaps.
+# Helm allows you to template your Kubernetes resources and manage configurations more dynamically.
+
+# 6. Use Environment Variables: When consuming ConfigMaps in your pods, you can map specific data entries
+# to environment variables or mount them as files in the container filesystem.
+
+# 7. Monitoring and Management: Regularly review and clean up your ConfigMaps to remove outdated
+# or unused configurations to keep your Kubernetes environment tidy and manageable.
+
+# Example usage in a pod:
+# spec:
+#   containers:
+#   - name: my-app
+#     image: my-app-image
+#     envFrom:
+#     - configMapRef:
+#         name: mongo-config
+# This snippet shows how to inject the entire ConfigMap as environment variables into a pod. 
+# Each key in the ConfigMap becomes an environment variable in the pod.
