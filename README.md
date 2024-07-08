@@ -3,9 +3,9 @@
 To run this Kubernetes-based project locally, you will need to have Kubernetes and Minikube installed on your machine. The project consists of a MongoDB database and a web application that connects to it. Here's a step-by-step guide to get the project up and running:
 
 ## Prerequisites
-Install Docker
-Install Minikube
-Install kubectl
+- Install Docker
+- Install Minikube
+- Install kubectl
 
 ### Steps to Run the Project
 Start Minikube
