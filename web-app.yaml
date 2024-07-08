@@ -41,6 +41,7 @@ kind: Service
 metadata:
   name: web-service
 spec:
+  type: NodePort # Expose the service outside the cluster. By default, the service is accessible only within the cluster.
   selector:
     app: web-app
   ports:
