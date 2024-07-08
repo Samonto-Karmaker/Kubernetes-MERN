@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      containers:
+      - name: web-app
+        image: mongo-express:latest
+        ports:
+        - containerPort: 8081
+        env:
+          - name: ME_CONFIG_MONGODB_SERVER
+            valueFrom:
+              configMapKeyRef:
+                name: mongo-config
+                key: database_url
+          - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: username
+          - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: password
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+spec:
+  selector:
+    app: web-app
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+      nodePort: 30080 # Expose the service on a specific port for external access
+      # NodePort is a static port that is assigned to the service. It should range between 30000-32767.
